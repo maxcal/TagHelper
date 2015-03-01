@@ -4,11 +4,11 @@ namespace Maxcal\TagHelper;
 
 use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Templating\Helper\AssetsHelper;
-
 use \DOMDocument, \DOMElement;
 
 /**
- *
+ * A Symfony\Component\Templating compatible view helper which creates HTML elements with no string interpolation required.
+ * Inspired by the Rails ActionView helpers.
  */
 class TagHelper extends Helper {
 
@@ -42,7 +42,6 @@ class TagHelper extends Helper {
     {
         return 'tag';
     }
-
 
     /**
      * Low level method to create generic HTML elements
@@ -84,7 +83,7 @@ class TagHelper extends Helper {
      * @return string
      * @api
      */
-    public function stylesheet($name, $media = array()){
+    public function stylesheet($name, $media = array('all')){
         $attributes = array();
         $name .= '.css';
         $attributes['href'] = $name;
@@ -94,9 +93,28 @@ class TagHelper extends Helper {
             $attributes['href'] = $this->getStylesheetPackage()->getUrl($name);
         }
 
-        if (!empty($media)) $attributes['media'] = implode($media);
+        if (!empty($media)) $attributes['media'] = implode(' ', $media);
 
         return $this->createTag('link', null, $attributes);
+    }
+
+    /**
+     * Creates a "empty" script tag with the src set to the
+     * @note Does not support "inline" script tags.
+     * @note Does not set a "type" attribute since they are deemed "useless" in HTML5.
+     * @param string $src
+     * @param array $attributes (optional)
+     * @return string
+     * @api
+     */
+    public function script($src, $attributes = array()) {
+        $attributes['src'] = "$src.js";
+
+        if ($this->getScriptPackage()) {
+            $attributes['src'] = $this->getScriptPackage()->getUrl($attributes['src']);
+        }
+
+        return $this->createTag('script', null, $attributes);
     }
 
     /**
@@ -105,4 +123,12 @@ class TagHelper extends Helper {
     protected function getStylesheetPackage(){
         return $this->assets;
     }
+
+    /**
+     * @return null|AssetsHelper
+     */
+    protected function getScriptPackage(){
+        return $this->assets;
+    }
+
 }

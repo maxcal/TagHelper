@@ -33,4 +33,11 @@ class TagHelperTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
+    public function test_link(){
+        $tag = $this->subject->link('Hello World!', '#');
+        $this->assertEquals('<a href="#">Hello World!</a>', $tag,
+            'it should create a link with the proper href and value'
+        );
+    }
+
 }

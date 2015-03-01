@@ -1,0 +1,12 @@
+<phpunit
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        >
+    <testsuites>
+        <testsuite name="TagHelper tests">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+    </php>
+</phpunit>

@@ -19,5 +19,6 @@
         "psr-4": {
             "Maxcal\\TagHelper\\": "src"
         }
-    }
+    },
+    "license": "MIT"
 }

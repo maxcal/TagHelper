@@ -1,0 +1,16 @@
+{
+    "name": "maxcal/tag-helper",
+    "description": "A helper class which uses DOM to create HTML elements",
+    "require": {
+        "symfony/templating": "~2.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "authors": [
+        {
+            "name": "Max Calabrese",
+            "email": "max.calabrese@ymail.com"
+        }
+    ]
+}

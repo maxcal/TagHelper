@@ -3,7 +3,7 @@
 namespace Maxcal\TagHelper;
 
 use Symfony\Component\Templating\Helper\Helper;
-use Symfony\Component\Templating\Helper\AssetsHelper;
+use Symfony\Component\Templating\Asset\PackageInterface;
 use \DOMDocument, \DOMElement;
 
 /**
@@ -13,22 +13,44 @@ use \DOMDocument, \DOMElement;
 class TagHelper extends Helper {
 
     /**
-     * @var AssetsHelper
+     * @var PackageInterface
      */
     protected $assets;
+    protected $js_package;
+    protected $css_package;
 
     /**
-     * @param AssetsHelper $assets
+     * @param PackageInterface $assets
      */
-    public function __construct($assets = null){
+    public function __construct(PackageInterface $assets = null){
         $this->assets = $assets;
     }
 
     /**
-     * @param AssetsHelper $assets
+     * @param PackageInterface $assets
+     * @return $this - for fluid chaining
      */
-    public function setAssetsHelper($assets){
+    public function setAssetsHelper(PackageInterface $assets){
         $this->assets = $assets;
+        return $this;
+    }
+
+    /**
+     * @param PackageInterface $pkg
+     * @return $this- for fluid chaining
+     */
+    public function setStylesheetsPackage(PackageInterface $pkg){
+        $this->css_package = $pkg;
+        return $this;
+    }
+
+    /**
+     * @param PackageInterface $pkg
+     * @return $this- for fluid chaining
+     */
+    public function setJavascriptPackage(PackageInterface $pkg){
+        $this->js_package = $pkg;
+        return $this;
     }
 
     /**
@@ -54,7 +76,6 @@ class TagHelper extends Helper {
     public function createTag($tag_name, $value, $attributes = array()){
         $doc = new DOMDocument();
         $el = $doc->createElement($tag_name, $value);
-
         foreach ($attributes as $key => $val) {
             $el->setAttribute($key, $val);
         }
@@ -118,17 +139,17 @@ class TagHelper extends Helper {
     }
 
     /**
-     * @return null|AssetsHelper
+     * @return null|PackageInterface
      */
     protected function getStylesheetPackage(){
-        return $this->assets;
+        if ($this->assets) return $this->assets->getPackage($this->css_package);
     }
 
     /**
-     * @return null|AssetsHelper
+     * @return null|PackageInterface
      */
     protected function getScriptPackage(){
-        return $this->assets;
+        if ($this->assets) return $this->assets->getPackage($this->css_package);
     }
 
 }
